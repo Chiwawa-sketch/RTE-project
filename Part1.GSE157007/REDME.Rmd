@@ -1,0 +1,58 @@
+# Identification of RTE Markers in Ageing-Related Single-Cell Transcriptomics
+
+This repository contains the source code to reproduce the analysis presented in the paper. The study utilizes single-cell RNA sequencing (scRNA-seq) data from dataset GSE157007 to identify molecular markers defining Recent Thymic Emigrants (RTE) and analyze their dynamics during aging.
+
+## Overview
+
+The analysis pipeline is designed to:
+1. Integrate PBMC data from Cord Blood, Young, Old, and Frail donors.
+2. Isolate T cell populations and refine Naive T cell annotation.
+3. Define RTE expression thresholds using a density-peak detection method.
+4. Correlate RTE frequency with donor age and visualize group-level distributions.
+
+## Repository Structure
+
+.
+├── README.md               # Project documentation
+├── R/
+│   └── functions.R         # Helper functions for density plotting and thresholding
+├── scripts/
+│   ├── 01_preprocessing.R  # Integration, QC, and Global Clustering (supFig 1a, 1b)
+│   ├── 02_tcell_subset.R   # T Cell Isolation and Subtyping (supFig 1c, 1d)
+│   ├── 03_rte_definition.R # RTE Marker Threshold Definition (supFig 1e)
+│   └── 04_correlation.R    # Age Correlation (supFig 1f) and Group Donuts (Fig 1G)
+└── results/                # Output directory for plots and tables
+
+## Dependencies
+
+The analysis requires R (>= 4.0) and the following packages:
+
+- Seurat (v4 or v5)
+- dplyr
+- ggplot2
+- readr
+- patchwork
+- ggpubr (for statistical correlation)
+
+## Usage Instructions
+
+### 1. Data Preparation
+Download the raw 10X Genomics data for GSE157007 from GEO. Ensure the directory structure matches the GSM IDs used in the scripts (e.g., GSM4750306, GSM4750303, etc.).
+
+Update the DATA_DIR variable in scripts/01_preprocessing.R to point to your local data path.
+
+### 2. Execution
+Run the scripts in numerical order to reproduce the analysis:
+
+```r
+# Step 1: Preprocessing and Global Annotation
+source("scripts/01_preprocessing.R")
+
+# Step 2: T Cell Subsetting and Refined Clustering
+source("scripts/02_tcell_subset.R")
+
+# Step 3: RTE Threshold Definition (Density Peak Method)
+source("scripts/03_rte_definition.R")
+
+# Step 4: Correlation Analysis and Donut Charts
+source("scripts/04_correlation.R")
